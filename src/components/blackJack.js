@@ -1,4 +1,6 @@
-class blackJack extends React.Component { // react component 사용
+import React, { App } from 'react';
+
+export default class Blackjack extends React.Component { // react component 사용
     constructor(props){               // React component props method init & setting
         super(props);                 // 이거 해야 this 사용 가능
         
@@ -148,7 +150,8 @@ class blackJack extends React.Component { // react component 사용
 
     // 딜러 카드 드로우
     dealerDraw() {
-        const { randomCard, updateDeck } = this.getRandomCard(deck);
+        const { randomCard, updateDeck } = this.getRandomCard(this.state.deck);
+        const dealer = this.state.dealer;
         dealer.cards.push(randomCard);// dealer card에 랜덤한 카드 더함
         dealer.count = this.getCount(dealer.cards);
         return { dealer , updateDeck };
@@ -250,13 +253,103 @@ class blackJack extends React.Component { // react component 사용
             return 'push';
         }
     }
-    // input
-    inputChange(e){}
-    // handler
-    handleKeyDown(e){}
-    // 모아줌
-    componentWillMount(){}
-    render(){
 
-    } 
-}
+    // input
+    inputChange(e){
+        const inputValue =+ e.target.value;
+        this.setState({ inputValue });
+    }
+    // handler
+    handleKeyDown(e){
+        const enter = 13;
+        console.log(e.keyCode);
+
+        if ( e.keyCode === enter ) {
+            this.hangChip();
+        }
+    }
+    // 모아줌
+    UNSAFE_componentWillMount() {
+        this.startNewGame();
+        const body = document.querySelector('body');
+        body.addEventListener('keydown', this.handleKeyDown.bind(this));
+    }
+    render(){
+        let dealerCount;
+      const card1 = this.state.dealer.cards[0].number;
+      const card2 = this.state.dealer.cards[1].number;
+      if (card2) {
+        dealerCount = this.state.dealer.count;
+      } else {
+        if (card1 === 'J' || card1 === 'Q' || card1 === 'K') {
+          dealerCount = 10;
+        } else if (card1 === 'A') {
+          dealerCount = 11;
+        } else {
+          dealerCount = card1;
+        }
+      }
+  
+      return (
+        <div>
+          <div className="buttons">
+            <button onClick={() => {this.startNewGame()}}>New Game</button>
+            <button onClick={() => {this.hit()}}>Hit</button>
+            <button onClick={() => {this.stand()}}>Stand</button>
+          </div>
+          
+          {/* 에러 부분 */}
+          <p>M: ${ this.state.money }</p>
+          {
+            !this.state.currentChip ? 
+            <div className="input-bet">            
+              <form>
+                <input type="text" name="bet" placeholder="" value={this.state.inputValue} onChange={this.inputChange.bind(this)}/>
+              </form>
+              <button onClick={() => {this.hangChip()}}>Hang chip</button>
+            </div>
+            : null
+          }
+          {
+            this.state.gameOver ?
+            <div className="buttons">
+              <button onClick={() => {this.startNewGame('continue')}}>Continue</button>
+            </div>
+            : null
+          }
+          <p>Your Hand ({ this.state.player.count })</p>
+          <table className="cards">
+            <tr>
+              { this.state.player.cards.map((card, i) => {
+                return <Card key={i} number={card.number} suit={card.suit}/>
+              }) }
+            </tr>
+          </table>
+          
+          {/* <p>Dealer's Hand ({ this.state.dealer.count })</p> */}
+          <table className="cards">
+            <tr>
+              { this.state.dealer.cards.map((card, i) => {
+                return <Card key={i} number={card.number} suit={card.suit}/>;
+              }) }
+            </tr>
+          </table>
+          
+          <p>{ this.state.message }</p>
+          {/* 에러 부분 */}
+        </div>
+      );
+    }
+};
+
+const Card = ({ number, suit }) => {
+    const combo = (number) ? `${number}${suit}` : null;
+    const color = (suit === '♦' || suit === '♥') ? 'card-red' : 'card';
+    return (
+        <td>
+            <div className={color}>
+                { combo }
+            </div>
+        </td>
+    );
+};
