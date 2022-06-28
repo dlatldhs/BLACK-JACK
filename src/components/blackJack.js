@@ -182,7 +182,7 @@ export default class Blackjack extends React.Component { // react component 사�
             else {// 일반 case
                 return total + card.number;
             }
-        });
+        },0);
     }
 
     // STOP
@@ -326,7 +326,7 @@ export default class Blackjack extends React.Component { // react component 사�
             </tr>
           </table>
           
-          {/* <p>Dealer's Hand ({ this.state.dealer.count })</p> */}
+          <p>Dealer's Hand ({ this.state.dealer.count })</p>
           <table className="cards">
             <tr>
               { this.state.dealer.cards.map((card, i) => {
