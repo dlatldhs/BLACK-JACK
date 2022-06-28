@@ -79,4 +79,89 @@ class blackJack extends React.Component { // react component 사용
             this.setState({ money, inputValue: '', currentChip });
         }
     }
+
+    // 게임 다시 시작하기
+    startNewGame(type) {
+        if ( type === 'continue' ) { //type 이 continue 일 때 (계속 하는거)
+            if ( this.state.money > 0 ) { // 돈이 0 보다 크게 있음
+                // deck = card 즉 card의 수가 10개 보다 적다면 새롭게 카드를 다시 만들고 아니면 계속 같은 deck 을 사용하는거
+                const deck = ( this.state.deck.length < 10 ) ? this.generateDeck() : this.state.deck;
+                // dealCard 에서 updateDeck(Deck - randomCard) player dealer 반환함
+                const { updateDeck , player , dealer } = this.dealCard(deck); // player 하고 dealer 한테 카드 주는거
+
+                this.setState({
+                    deck: updateDeck,
+                    dealer,
+                    player,
+                    currentChip:null,
+                    gameOver: false,
+                    message: null
+                });
+            }
+            else { // 돈이 0 보다 적을 때
+                this.setState({ message: 'Game over! You are broke! | Please start a new game.'});
+            }
+        }
+        else { // continue 계속하는게 아니라면 새 게임 만드는거
+            const deck = this.generateDeck();// deck 생성
+            const { updateDeck, player, dealer } = this.dealCard(deck); // 카드 할당
+
+            // state 만들기
+            this.setState({
+                deck: updateDeck,
+                dealer,
+                player,
+                money:100,
+                inputValue: '',
+                currentChip: null,
+                gameOver: false,
+                message: null
+            })
+        }
+    }
+
+    // 카드 추가
+    hit() {
+        if ( !this.state.gameOver ) { // gmaeOver 한 상태라면 실행 X gameOver 안했으면 실행 ㄱㄱ
+            if ( this.state.currentChip ) { // chip(game coin)이 있을 때
+                const {randomCard,updateDeck} = this.getRandomCard(this.state.deck);
+                const player = this.state.player;
+                player.cards.push(randomCard);
+                player.count = this.getCount(player.cards);
+
+                if ( player.count > 21 ) { // player 블랙잭 count가 21 보다 클 때
+                    this.setState({ player, gameOver: true, message: 'BUST!' });
+                }
+                else {
+                    this.setState({ deck: updateDeck, player });
+                }
+            }
+            else {// 없을 ㄸ ㅐ
+                this.setState({ message: 'Please place chip' });
+            }
+        }
+        else { // 이미 game over 한 상태
+            this.setState({ message: 'Game over! Please start a new game.' });
+        }
+    }
+
+    // 딜러 카드 드로우
+    dealerDraw() {
+        
+    }
+    // 몇 개 인지 세는거
+    getCount(cards){}
+    // STOP
+    stand() {}
+    // 승자 가리기
+    getWinner(){}
+    // input
+    inputChange(e){}
+    // handler
+    handleKeyDown(e){}
+    // 모아줌
+    componentWillMount(){}
+    render(){
+
+    } 
 }
