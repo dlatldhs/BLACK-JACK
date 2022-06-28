@@ -162,12 +162,13 @@ class blackJack extends React.Component { // react component 사용
             if ( card.number === 'A' ) {
                 rearranged.push(card); // 위에 만든 배열에 마지막에 card 넣음
             }
-            else if ( card.number ) {
-                rearranged.unshift( card );
+            else if ( card.number ) { // card 중 숫자인 것들을
+                rearranged.unshift( card ); // 맨 앞쪽에 추가 함 
             }
         });
 
-        return rearranged.reduce(( total , card ) => {
+        // return score
+        return rearranged.reduce(( total , card ) => {// 각각의 rearranged 의 요소마다 함수를 실행시킴
             // K Q J case
             if ( card.number === 'J' || card.number === 'Q' || card.number === 'K' ) {
                 return total + 10;
@@ -178,13 +179,77 @@ class blackJack extends React.Component { // react component 사용
             else {// 일반 case
                 return total + card.number;
             }
-        } )
+        });
     }
 
     // STOP
-    stand() {}
+    stand() {
+        if ( !this.state.gameOver ) { // if not gameOVer
+            const randomCard = this.getRandomCard(this.state.deck);// randomCard <= {randomCard , updateDeck }
+            let deck = randomCard.updatedDeck; // deck에 updateDeck 넣음
+            let dealer = this.state.dealer; // dealer 에 위에 있는 state의 dealer 넣음
+            dealer.cards.pop(); // 마지막 삭제
+            dealer.cards.push( randomCard.randomCard ); // 마지막에 randomCard 추가
+            dealer.count = this.getCount( dealer.cards ); // 총 score ? 같은거 계산
+
+            while ( dealer.count < 17 ) { // dealer 총 합이 17보다 작을 때만
+                const draw = this.dealerDraw( dealer, deck );
+                dealer = draw.dealer;
+                deck = draw.deck;
+            }
+
+            if ( dealer.count > 21 ) {
+                this.setState({
+                    deck,
+                    dealer,
+                    money: this.state.money + this.state.currentChip * 2,
+                    gameOver: true,
+                    message: 'Dealer bust! You win!'
+                });
+            }
+            else {
+                const winner = this.getWinner( dealer , this.state.player );
+                let money = this.state.money;
+                let message;
+
+                if ( winner === 'dealer' ) {
+                    message = 'Dealer wins...';
+                }
+                else if ( winner === 'player' ) {
+                    money += this.state.currentChip * 2;
+                    message = 'You winner!!';
+                }
+                else {
+                    money += this.state.currentChip;
+                    message = 'Push.';
+                }
+
+                this.setState({
+                    deck,
+                    dealer,
+                    money,
+                    gameover: true,
+                    message
+                });
+            }
+        }
+        else {
+            this.setState({ message: 'Game Over Please start a new game.' });
+        }
+    }
+
     // 승자 가리기
-    getWinner(){}
+    getWinner( dealer, player ){ // 비교해야되서 2개 필요
+        if ( dealer.count > player.count ) { // 딜러가 총합이 더 클 때
+            return 'dealer';
+        }
+        else if ( dealer.count < player.count ) { // 플레이어가 총합이 더 클 때
+            return 'player';
+        }
+        else { // 둘다 아닐 ㄸ ㅐ
+            return 'push';
+        }
+    }
     // input
     inputChange(e){}
     // handler
