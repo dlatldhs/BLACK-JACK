@@ -52,12 +52,12 @@ class blackJack extends React.Component { // react component 사용
 
         const player = {
             cards: playerStartingHand,
-            count: this.getCount(playerStartingHand) // JS method player한테 있는 카드 갯수 구해줌
+            count: this.getCount(playerStartingHand) // player score 줌
         };
          
         const dealer = {
             cards: dealerStartingHand,
-            count: this.getCount(dealerStartingHand) // JS method 딜러 한테 있는 카드 갯수 구해줌
+            count: this.getCount(dealerStartingHand) // dealer score 줌
         }
 
         //      Deck을 randomCard를 제외한 Deck 으로 update 함 그리고 player , dealer 객체 반환
@@ -124,6 +124,7 @@ class blackJack extends React.Component { // react component 사용
     hit() {
         if ( !this.state.gameOver ) { // gmaeOver 한 상태라면 실행 X gameOver 안했으면 실행 ㄱㄱ
             if ( this.state.currentChip ) { // chip(game coin)이 있을 때
+                // getRandomCard 하면 randomCard 랑 updateDeck 을 주는데 randomCard 는 말그대로 랜덤 카드이고 updateDeck은 deck에서 randomCard index slpice 해서 뺀 거
                 const {randomCard,updateDeck} = this.getRandomCard(this.state.deck);
                 const player = this.state.player;
                 player.cards.push(randomCard);
@@ -147,10 +148,39 @@ class blackJack extends React.Component { // react component 사용
 
     // 딜러 카드 드로우
     dealerDraw() {
-        
+        const { randomCard, updateDeck } = this.getRandomCard(deck);
+        dealer.cards.push(randomCard);// dealer card에 랜덤한 카드 더함
+        dealer.count = this.getCount(dealer.cards);
+        return { dealer , updateDeck };
     }
+
     // 몇 개 인지 세는거
-    getCount(cards){}
+    getCount(cards){// cards가 많아서 인자를 받아서 따로 처리함
+        const rearranged =[];
+        cards.forEach(card => { // element(card) 에 대해 각각 실행하는 함수임 <=(forEach)
+            // console.log(element);
+            if ( card.number === 'A' ) {
+                rearranged.push(card); // 위에 만든 배열에 마지막에 card 넣음
+            }
+            else if ( card.number ) {
+                rearranged.unshift( card );
+            }
+        });
+
+        return rearranged.reduce(( total , card ) => {
+            // K Q J case
+            if ( card.number === 'J' || card.number === 'Q' || card.number === 'K' ) {
+                return total + 10;
+            }
+            else if ( card.number === 'A' ) { // 특수 케이스
+                return ( total + 11 <= 21 ) ? total + 11 : total + 1;
+            }
+            else {// 일반 case
+                return total + card.number;
+            }
+        } )
+    }
+
     // STOP
     stand() {}
     // 승자 가리기
