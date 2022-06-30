@@ -355,7 +355,6 @@ export default class Blackjack extends React.Component { // react component 사�
           </table>
           
           <p>{ this.state.message }</p>
-          {/* 에러 부분 */}
         </div>
       );
     }
