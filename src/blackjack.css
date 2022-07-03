@@ -3,9 +3,13 @@ body {
     font-family: 'Lucida Sans Unicode';
     
 }
-  
+.buttonss {
+    bottom: 5%;
+    position: absolute;
+    align-items: center;
+    flex: 1;
+}
 button {
-    margin: 0 10px 0 10px;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -21,20 +25,8 @@ button {
     width: 100%;
     height: 50px;
     font-size: 30px;
-    position : absolute;
-    margin-right: 10px;
-    bottom: 5%;
 }
 
-button:active,
-button:hover,
-button:focus {
-  background: var(--button-hover-bg-color);
-  outline: 0;
-}
-button:disabled {
-  opacity: 0.5;
-}
   
 form {
     display: flex;

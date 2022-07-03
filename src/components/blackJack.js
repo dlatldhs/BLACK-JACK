@@ -311,12 +311,19 @@ export default class Blackjack extends React.Component { // react component 사�
   
       return (
         <div>
-          <div className="buttons">
-            <button onClick={() => {this.startNewGame()}}>New Game</button>
-            <button onClick={() => {this.hit()}}>Hit</button>
-            <button onClick={() => {this.stand()}}>Stand</button>
-          </div>
-          
+            <div className="buttonss">
+                <button onClick={() => {this.hangChip()}}>Hang chip</button>
+                <button onClick={() => {this.startNewGame()}}>New Game</button>
+                <button onClick={() => {this.hit()}}>Hit</button>
+                <button onClick={() => {this.stand()}}>Stand</button>
+                {
+                    this.state.gameOver ?
+                    <div className="buttons">
+                    <button onClick={() => {this.startNewGame('continue')}}>Continue</button>
+                    </div>
+                    : null
+                }
+            </div>
           {/* 에러 부분 */}
           <p>M: ${ this.state.money }</p>
           {
@@ -325,14 +332,6 @@ export default class Blackjack extends React.Component { // react component 사�
               <form>
                 <input type="text" name="bet" placeholder="" value={this.state.inputValue} onChange={this.inputChange.bind(this)}/>
               </form>
-              <button onClick={() => {this.hangChip()}}>Hang chip</button>
-            </div>
-            : null
-          }
-          {
-            this.state.gameOver ?
-            <div className="buttons">
-              <button onClick={() => {this.startNewGame('continue')}}>Continue</button>
             </div>
             : null
           }
