@@ -1,4 +1,5 @@
 import React, { App } from 'react';
+import Header from './Header';
 
 export default class Blackjack extends React.Component { // react component 사용
     constructor(props){               // React component props method init & setting
@@ -310,50 +311,51 @@ export default class Blackjack extends React.Component { // react component 사�
       }
   
       return (
-        <div>
-            <div className="buttonss">
-                <button onClick={() => {this.hangChip()}}>Hang chip</button>
-                <button onClick={() => {this.startNewGame()}}>New Game</button>
-                <button onClick={() => {this.hit()}}>Hit</button>
-                <button onClick={() => {this.stand()}}>Stand</button>
-                {
-                    this.state.gameOver ?
-                    <div className="buttons">
-                    <button onClick={() => {this.startNewGame('continue')}}>Continue</button>
-                    </div>
-                    : null
-                }
-            </div>
+      <div className="contents">
+        <Header />
           {/* 에러 부분 */}
-          <p>M: ${ this.state.money }</p>
           {
             !this.state.currentChip ? 
-            <div className="input-bet">            
-              <form>
-                <input type="text" name="bet" placeholder="" value={this.state.inputValue} onChange={this.inputChange.bind(this)}/>
-              </form>
+            <div className="input-bet">
+                <p id="wallet">Wallet:{ this.state.money }$</p>
+                <input autocomplete="off" type="text" name="bet" placeholder="" value={this.state.inputValue} onChange={this.inputChange.bind(this)}/>
             </div>
             : null
           }
-          <p>Your Hand ({ this.state.player.count })</p>
-          <table className="cards">
-            <tr>
-              { this.state.player.cards.map((card, i) => {
-                return <Card key={i} number={card.number} suit={card.suit}/>
-              }) }
-            </tr>
-          </table>
-          
-          <p>Dealer's Hand ({ this.state.dealer.count })</p>
-          <table className="cards">
-            <tr>
-              { this.state.dealer.cards.map((card, i) => {
-                return <Card key={i} number={card.number} suit={card.suit}/>;
-              }) }
-            </tr>
-          </table>
-          
+          <div>
+            <p>Your Hand ({ this.state.player.count })</p>
+            <table className="cards">
+                <tr>
+                { this.state.player.cards.map((card, i) => {
+                    return <Card key={i} number={card.number} suit={card.suit}/>
+                }) }
+                </tr>
+            </table>
+            
+            <p>Dealer's Hand ({ this.state.dealer.count })</p>
+            <table className="cards">
+                <tr>
+                { this.state.dealer.cards.map((card, i) => {
+                    return <Card key={i} number={card.number} suit={card.suit}/>;
+                }) }
+                </tr>
+            </table>
+          </div>
           <p>{ this.state.message }</p>
+          <div className="test" >
+            <div className="bottom" >
+                
+                <button id="bottom_btn" onClick={() => {this.startNewGame()}}>New Game</button>
+                <button id="bottom_btn" onClick={() => {this.hangChip()}}>Hang chip</button>
+                <button id="bottom_btn" onClick={() => {this.hit()}}>Hit</button>
+                <button id="bottom_btn" onClick={() => {this.stand()}}>Stand</button>
+                {
+                        this.state.gameOver ?
+                        <button id="bottom_btn" onClick={() => {this.startNewGame('continue')}}>Continue</button>
+                        : null
+                }
+            </div>
+          </div>
         </div>
       );
     }

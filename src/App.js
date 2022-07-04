@@ -7,7 +7,7 @@ import "./blackjack.css";
 export default function App() {
   return (
     <div className="App">
-      <Header />
+      {/* <Header /> */}
       <Blackjack />
     </div>
   );
