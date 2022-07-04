@@ -10,7 +10,7 @@ export default class Blackjack extends React.Component { // react component 사�
             dealer: null,
             player: null,
             money: 0,
-            inputValue: '',
+            inputValue: 0,
             currentChip: null,
             gameOver: false,
             message: null 
@@ -125,10 +125,10 @@ export default class Blackjack extends React.Component { // react component 사�
         const currentChip = this.state.inputValue;
 
         if ( currentChip > this.state.money ) { // 더 많이 입력 받았을 경우
-            this.setState({ message: '돈이 부족해용' });
+            this.setState({ message: '돈이 부족합니다.' });
         }
         else if ( currentChip % 1 !==0 ) { // 숫자가 아닌 것들 입력 받을 경우
-            this.setState({ message: '숫자만 넣어주세용' });
+            this.setState({ message: '숫자만 입력해주세요.' });
         }
         else {
             const money = this.state.money - currentChip;
@@ -314,10 +314,11 @@ export default class Blackjack extends React.Component { // react component 사�
       <div className="contents">
         <Header />
           {/* 에러 부분 */}
+          <p id="wallet">Wallet:{ this.state.money }$</p>
+          <p id="chip">chip:{ !this.state.currentChip ? 0 : this.state.currentChip }</p>
           {
             !this.state.currentChip ? 
             <div className="input-bet">
-                <p id="wallet">Wallet:{ this.state.money }$</p>
                 <input autocomplete="off" type="text" name="bet" placeholder="" value={this.state.inputValue} onChange={this.inputChange.bind(this)}/>
             </div>
             : null
