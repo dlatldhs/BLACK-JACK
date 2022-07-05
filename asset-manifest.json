@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/http//dlatldhs.io/BLACK-JACK/static/css/main.bc8b5c97.css",
-    "main.js": "/http//dlatldhs.io/BLACK-JACK/static/js/main.43e07cc2.js",
-    "static/media/background.webp": "/http//dlatldhs.io/BLACK-JACK/static/media/background.91eabe0c386cdce957c1.webp",
-    "index.html": "/http//dlatldhs.io/BLACK-JACK/index.html",
-    "main.bc8b5c97.css.map": "/http//dlatldhs.io/BLACK-JACK/static/css/main.bc8b5c97.css.map",
-    "main.43e07cc2.js.map": "/http//dlatldhs.io/BLACK-JACK/static/js/main.43e07cc2.js.map"
+    "main.css": "/http//dlatldhs.github.io/BLACK-JACK/static/css/main.193d40db.css",
+    "main.js": "/http//dlatldhs.github.io/BLACK-JACK/static/js/main.43e07cc2.js",
+    "static/media/background.webp": "/http//dlatldhs.github.io/BLACK-JACK/static/media/background.91eabe0c386cdce957c1.webp",
+    "index.html": "/http//dlatldhs.github.io/BLACK-JACK/index.html",
+    "main.193d40db.css.map": "/http//dlatldhs.github.io/BLACK-JACK/static/css/main.193d40db.css.map",
+    "main.43e07cc2.js.map": "/http//dlatldhs.github.io/BLACK-JACK/static/js/main.43e07cc2.js.map"
   },
   "entrypoints": [
-    "static/css/main.bc8b5c97.css",
+    "static/css/main.193d40db.css",
     "static/js/main.43e07cc2.js"
   ]
 }
